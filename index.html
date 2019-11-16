@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>Pruebas en VUEJS</title>
+</head>
+<body>
+ 
+  <div id="app">
+    <h1>{{title}}</h1>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el:"#app",
+      data(){
+        return {
+          title: "Hola mundo desde Vue"
+        }
+      }
+    });
+  </script>
+</body>
+</html>
