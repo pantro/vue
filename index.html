@@ -8,17 +8,14 @@
 <body>
  
   <div id="app">
-    <h1>{{title}}</h1>
+    <hello-world/>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="./components/HelloWorld.js"></script>
   <script>
-    new Vue({
+    let vm = new Vue({
       el:"#app",
-      data(){
-        return {
-          title: "Hola mundo desde Vue"
-        }
-      }
+      
     });
   </script>
 </body>
