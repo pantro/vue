@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>Manejando Datos - Usando Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css"  crossorigin="anonymous">
+<style>
+    .title-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #eee;
+      padding: 20px;
+    }
+    .map2 { 
+        padding: 10px;
+        border: 2px solid #7f7f84;
+        width: 100% !important;
+        height: 500px !important;
+        position:  relative !important;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+ 
+  <div id="app"></div>
+ 
+  <script src="https://unpkg.com/vue@2.6.10/dist/vue.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue-select@latest" crossorigin="anonymous"></script>
+  <script src="urm2lat.js"></script>
+    
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+    
+  <script src="https://unpkg.com/vue2-leaflet@2.1.1/dist/vue2-leaflet.min.js"></script>
+   
+<script type="text/javascript" src="app.js"></script>
+ 
+</body>
+</html>
