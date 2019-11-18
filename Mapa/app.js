@@ -1,12 +1,13 @@
 Vue.component('v-select', VueSelect.VueSelect);
- 
-const { LMap, LTileLayer, LMarker, LTooltip, LPopup } = Vue2Leaflet;
+
+const { LMap, LTileLayer, LMarker, LTooltip, LPopup, LPolygon } = Vue2Leaflet;
  
 const v_map = Vue.component('p-map', LMap); // Vue2Leaflet.Map
 const v_tilelayer = Vue.component('p-tilelayer', LTileLayer ); // Vue2Leaflet.TileLayer
 const v_marker = Vue.component('p-marker', LMarker); // Vue2Leaflet.Marker
 const v_tooltip2 = Vue.component('p-tooltip2', LTooltip); // Vue2Leaflet.LTooltip
 const v_popup = Vue.component('p-popup', LPopup); // Vue2Leaflet.LPopup
+const v_polygon = Vue.component('p-polygon', LPolygon); // Vue2Leaflet.LPolygon
  
 const BtileProviders = [
     {
@@ -34,7 +35,7 @@ const show_mapas = Vue.component('mapa-simple', {
             layers: [],
             selectedTileSet: BtileProviders[0], 
             tileSets: BtileProviders,
-            mapOptions_default: { zoomControl: false, attributionControl: false, zoomSnap: true },
+            mapOptions_default: { zoomControl: true, attributionControl: false, zoomSnap: true },
             minZoom_def: 1,
             maxZoom_def: 20,
             show_mapsets_default: true,
@@ -53,36 +54,57 @@ const show_mapas = Vue.component('mapa-simple', {
         },
         center() { return L.latLng(this.coords)},
         label() { return this.mapdata.label },
+        coordinates(){
+            return [[
+                [41.79042784175226, -87.60491109933375],
+                [41.79371959572518, -87.59918340932317],
+                [41.79048715413015, -87.59075097680761],
+                [41.78233118716912, -87.59556382744151],
+                [41.780581226351444, -87.60940574496703],
+                [41.79063543483471, -87.61095699434492],
+                [41.79042784175226, -87.60491109933375]
+            ]];
+        }
     },
     methods: {
         get_coordenadas(e) {
             let coord = e.latlng;
             let lat = coord.lat;
             let lng = coord.lng;
-            // console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+            console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
             let xy = LatLonToUTMXY2(lat, lng, 30);
             // console.log("You clicked the map at X: " + xy[0] + " and Y: " + xy[1]);
             this.$emit('get_coordenadas', xy);
         }, 
     },
+    created() {
+        axios
+            .get(
+                "https://rawgit.com/gregoiredavid/france-geojson/master/regions/pays-de-la-loire/communes-pays-de-la-loire.geojson"
+            )
+            .then(response => {
+                this.geojson = response.data;
+            });
+    },
     template: `
-<div>
-    <p-map id="map" ref="map" 
-        :zoom="zoom" 
-        :center="center"
-        :min-zoom="minZoom"
-        :max-zoom="maxZoom"
-        :options="mapOptions"
-        @click="get_coordenadas"
-        class="map2">
-        <p-tilelayer ref="tile" :url="selectedTileSet.url"></p-tilelayer>
-        <p-marker :lat-lng="coords">
-            <p-popup :content="label" v-if="mapdata.with_popup"></p-popup>
-            <p-tooltip2 :content="label" v-if="mapdata.with_tooltip"></p-tooltip2>
-        </p-marker>
-    </p-map>  
-</div>
-`
+    <div>
+        <p-map id="map" ref="map" 
+            :zoom="zoom" 
+            :center="center"
+            :min-zoom="minZoom"
+            :max-zoom="maxZoom"
+            :options="mapOptions"
+            @click="get_coordenadas"
+            class="map2">
+            <p-tilelayer ref="tile" :url="selectedTileSet.url"></p-tilelayer>
+            <p-marker :lat-lng="coords">
+                <p-popup :content="label" v-if="mapdata.with_popup"></p-popup>
+                <p-tooltip2 :content="label" v-if="mapdata.with_tooltip"></p-tooltip2>
+            </p-marker>
+            <p-polygon :lat-lngs="coordinates"></p-polygon>
+        </p-map>  
+    </div>
+    `
 })
 
 var app = new Vue({
@@ -125,7 +147,7 @@ var app = new Vue({
     template:
     `
     <div>
-    <div class="title-row">
+        <div class="title-row">
             <span>CoordX:</span><input type="text" v-model="coordx">
             <span>CoordY:</span><input type="text" v-model="coordy">
             <span>Label:</span><input type="text" v-model="label">
